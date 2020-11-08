@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ejercicio MPLS - LDP y OSPF</title>
+        <style>
+/* From extension zhuangtongfa.material-theme */
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body {
+  box-sizing: border-box;
+  min-width: 200px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote {
+  background-color: initial;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  color: initial;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code {
+  color: inherit;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre code {
+  color: initial;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code > div {
+  background: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table th, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table td {
+  border: 1px solid rgba(171, 178, 191, 0.5) !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body.showEditorSelection .code-active-line:before {
+  border-left: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body.showEditorSelection .code-line:hover:before {
+  border-left: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body.showEditorSelection .code-line .code-line:hover:before {
+  border-left: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body p, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+/* Generated from 'node_modules/github-markdown-css/github-markdown.css' */
+@font-face {
+  font-family: octicons-link;
+  src: url(data:font/woff;charset=utf-8;base64,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) format("woff");
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  color: #abb2bf;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  background: #282c34;
+  padding-top: 20px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c {
+  color: #6a737d;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s .pl-v {
+  color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-e, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-en {
+  color: #6f42c1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-smi, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s .pl-s1 {
+  color: #24292e;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ent {
+  color: #22863a;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-k {
+  color: #d73a49;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-pds, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-s .pl-pse .pl-s1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-cce, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-sre, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-sra {
+  color: #032f62;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-v, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-smw {
+  color: #e36209;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-bu {
+  color: #b31d28;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ii {
+  color: #fafbfc;
+  background-color: #b31d28;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c2 {
+  color: #fafbfc;
+  background-color: #d73a49;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-c2::before {
+  content: "^M";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sr .pl-cce {
+  font-weight: bold;
+  color: #22863a;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ml {
+  color: #735c0f;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mh, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mh .pl-en, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ms {
+  font-weight: bold;
+  color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mi {
+  font-style: italic;
+  color: #24292e;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mb {
+  font-weight: bold;
+  color: #24292e;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-md {
+  color: #b31d28;
+  background-color: #ffeef0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mi1 {
+  color: #22863a;
+  background-color: #f0fff4;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mc {
+  color: #e36209;
+  background-color: #ffebda;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mi2 {
+  color: #f6f8fa;
+  background-color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-mdr {
+  font-weight: bold;
+  color: #6f42c1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-ba {
+  color: #586069;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-sg {
+  color: #959da5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-corl {
+  text-decoration: underline;
+  color: #032f62;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .octicon {
+  display: inline-block;
+  vertical-align: text-top;
+  fill: currentColor;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a {
+  background-color: transparent;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:active, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:hover {
+  outline-width: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body strong {
+  font-weight: inherit;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body strong {
+  font-weight: bolder;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img {
+  border-style: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body kbd, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body input {
+  font: inherit;
+  margin: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body input {
+  overflow: visible;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body [type=checkbox] {
+  box-sizing: border-box;
+  padding: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body * {
+  box-sizing: border-box;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body input {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a {
+  color: #528bff;
+  text-decoration: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:hover {
+  text-decoration: underline;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body strong {
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #dfe2e5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr::before {
+  display: table;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body td, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body th {
+  padding: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 {
+  font-size: 32px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  font-size: 12px;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote {
+  margin: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ol {
+  list-style-type: lower-roman;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ul ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ol ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ul ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dd {
+  margin-left: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .octicon {
+  vertical-align: text-bottom;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-0 {
+  padding-left: 0 !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-1 {
+  padding-left: 4px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-2 {
+  padding-left: 8px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-3 {
+  padding-left: 16px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-4 {
+  padding-left: 24px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-5 {
+  padding-left: 32px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .pl-6 {
+  padding-left: 40px !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body::before {
+  display: table;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body > *:first-child {
+  margin-top: 0 !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body > *:last-child {
+  margin-bottom: 0 !important;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .anchor {
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  line-height: 1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .anchor:focus {
+  outline: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body p, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #e1e4e8;
+  border: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote {
+  /* padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5; */
+  padding: 8.5px 17px;
+  margin: 1.5em 0;
+  font-size: inherit;
+  color: #7c879c;
+  border-color: #4b5362;
+  border-width: 4px;
+  border-left: 5px solid #4b5362;
+  background: transparent;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote > :first-child {
+  margin-top: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #444d56;
+  vertical-align: middle;
+  background-color: #fafbfc;
+  border: solid 1px #c6cbd1;
+  border-bottom-color: #959da5;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #959da5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #f0f0f0;
+  border-bottom: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5 .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 .octicon-link {
+  color: #1b1f23;
+  vertical-align: middle;
+  visibility: hidden;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5:hover .anchor, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6:hover .anchor {
+  text-decoration: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5:hover .anchor .octicon-link, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.5em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h3 {
+  font-size: 1.25em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h4 {
+  font-size: 1em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h5 {
+  font-size: 0.875em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body h6 {
+  font-size: 0.85em;
+  color: #6a737d;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol {
+  padding-left: 2em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ul, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ul ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ol, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body li {
+  word-wrap: break-all;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body li > p {
+  margin-top: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body li + li {
+  margin-top: 0.25em;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl {
+  padding: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 600;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table th {
+  font-weight: 700;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table th, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table td {
+  padding: 6px 13px;
+  /* border: 1px solid #dfe2e5; */
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table tr {
+  /* background-color: #fff; */
+  /* border-top: 1px solid #c6cbd1; */
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body table tr:nth-child(2n) {
+  /* background-color: #f6f8fa; */
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img {
+  max-width: 100%;
+  box-sizing: content-box;
+  display: inline-block;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img[align=right] {
+  padding-left: 20px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body img[align=left] {
+  padding-right: 20px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: #3a3f4b;
+  border-radius: 3px;
+  color: white;
+  margin: 0 1px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  word-wrap: normal;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre > code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .highlight {
+  margin-bottom: 16px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .highlight pre, .vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  /* background-color: #f6f8fa; */
+  border-radius: 3px;
+  background-color: #31363f;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body pre code {
+  display: inline;
+  max-width: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+  color: #abb2bf;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .full-commit .btn-outline:not(:disabled):hover {
+  color: #005cc5;
+  border-color: #005cc5;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  line-height: 10px;
+  color: #444d56;
+  vertical-align: middle;
+  background-color: #fafbfc;
+  border: solid 1px #d1d5da;
+  border-bottom-color: #c6cbd1;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #c6cbd1;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body :checked + .radio-label {
+  position: relative;
+  z-index: 1;
+  border-color: #0366d6;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .task-list-item {
+  list-style-type: none;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .task-list-item + .task-list-item {
+  margin-top: 3px;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body .task-list-item input {
+  margin: 0 0.2em 0.25em -1.6em;
+  vertical-align: middle;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"].vscode-body hr {
+  border-bottom-color: #eee;
+}
+
+/*
+
+Atom One Dark by Daniel Gamage
+Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
+
+base:    #282c34
+mono-1:  #abb2bf
+mono-2:  #818896
+mono-3:  #5c6370
+hue-1:   #56b6c2
+hue-2:   #61aeee
+hue-3:   #c678dd
+hue-4:   #98c379
+hue-5:   #e06c75
+hue-5-2: #be5046
+hue-6:   #d19a66
+hue-6-2: #e6c07b
+
+*/
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #abb2bf;
+  background: #282c34;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-comment,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-doctag,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-keyword,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-formula {
+  color: #c678dd;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-section,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-name,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-tag,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-deletion,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-subst {
+  color: #e06c75;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-literal {
+  color: #56b6c2;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-string,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-regexp,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-addition,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-attribute,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-meta-string {
+  color: #98c379;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-built_in,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-class .hljs-title {
+  color: #e6c07b;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-attr,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-variable,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-template-variable,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-type,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-class,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-attr,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-pseudo,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-number {
+  color: #d19a66;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-symbol,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-bullet,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-link,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-meta,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-selector-id,
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-title {
+  color: #61aeee;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-emphasis {
+  font-style: italic;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-strong {
+  font-weight: bold;
+}
+.vscode-dark[data-vscode-theme-name="One Dark Pro"] .hljs-link {
+  text-decoration: underline;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        
+        
+    </head>
+    <body class="vscode-light">
+        <h1 id="ejercicio-mpls---ldp-y-ospf">Ejercicio MPLS - LDP y OSPF</h1>
+<p>Se prepara el sistema, creando las conexiones necesarias. Posteriormente se configura OSPF. Por último se configura MPLS.</p>
+<h2 id="topología">Topología</h2>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/topology.png" alt="Topo"></p>
+<p>RA y RB tienen una conexión point-to-point</p>
+<p>RB y RC tienen una conexión point-to-point</p>
+<h3 id="configuración">Configuración</h3>
+<h4 id="router-a">Router A</h4>
+<pre><code><code><div>&lt;Huawei&gt;system-view
+[Huawei]sysname RouterA
+
+[RouterA]interface LoopBack 0
+[RouterA-LoopBack0]ip address 1.1.1.1 32
+
+[RouterA-LoopBack0]interface GigabitEthernet 0/0/0
+[RouterA-GigabitEthernet0/0/0]ip address 10.1.1.1 30
+
+[RouterA-GigabitEthernet0/0/0]interface GigabitEthernet 0/0/1
+[RouterA-GigabitEthernet0/0/1]ip address 172.16.1.1 24
+
+[RouterA]ospf 100
+[RouterA-ospf-100]area 0
+[RouterA-ospf-100-area-0.0.0.0]network 1.1.1.1 0.0.0.0
+[RouterA-ospf-100-area-0.0.0.0]network 10.1.1.0 0.0.0.3
+[RouterA-ospf-100-area-0.0.0.0]network 172.16.1.0 0.0.0.255
+
+[RouterA]mpls lsr-id 1.1.1.1
+[RouterA]mpls
+[RouterA-mpls]label advertise non-null
+[RouterA-mpls]lsp-trigger ip-prefix LAN
+[RouterA-mpls]mpls ldp
+
+[RouterA]ip ip-prefix LAN index 10 permit 172.16.1.0 24
+[RouterA]ip ip-prefix LAN index 20 permit 172.16.2.0 24
+
+[RouterA]interface GigabitEthernet 0/0/0
+[RouterA-GigabitEthernet0/0/0]mpls
+[RouterA-GigabitEthernet0/0/0]mpls ldp
+
+&lt;RouterA&gt;save
+</div></code></code></pre>
+<h4 id="router-b">Router B</h4>
+<pre><code><code><div>&lt;Huawei&gt;system-view
+[Huawei]sysname RouterB
+
+[RouterB]interface LoopBack 0
+[RouterB-LoopBack0]ip address 2.2.2.2 32
+
+[RouterB-LoopBack0]interface GigabitEthernet 0/0/0
+[RouterB-GigabitEthernet0/0/0]ip address 10.1.1.2 30
+
+[RouterB-GigabitEthernet0/0/0]interface GigabitEthernet 0/0/1
+[RouterB-GigabitEthernet0/0/1]ip address 10.1.2.1 30
+
+[RouterB]ospf 100
+[RouterB-ospf-100]area 0
+[RouterB-ospf-100-area-0.0.0.0]network 2.2.2.2 0.0.0.0
+[RouterB-ospf-100-area-0.0.0.0]network 10.1.1.0 0.0.0.3
+[RouterB-ospf-100-area-0.0.0.0]network 10.1.2.0 0.0.0.3
+
+[RouterB]mpls lsr-id 2.2.2.2
+[RouterB]mpls
+[RouterB-mpls]label advertise non-null
+[RouterB-mpls]lsp-trigger ip-prefix LAN
+[RouterB-mpls]mpls ldp
+
+[RouterB]ip ip-prefix LAN index 10 permit 172.16.1.0 24
+[RouterB]ip ip-prefix LAN index 20 permit 172.16.2.0 24
+
+[RouterB]interface GigabitEthernet 0/0/0
+[RouterB-GigabitEthernet0/0/0]mpls
+[RouterB-GigabitEthernet0/0/0]mpls ldp
+
+[RouterB-GigabitEthernet0/0/0]interface GigabitEthernet 0/0/1
+[RouterB-GigabitEthernet0/0/1]mpls
+[RouterB-GigabitEthernet0/0/1]mpls ldp
+
+&lt;RouterB&gt;save
+</div></code></code></pre>
+<h4 id="router-c">Router C</h4>
+<pre><code><code><div>&lt;Huawei&gt;system-view
+[Huawei]sysname RouterC
+
+[RouterC]interface LoopBack 0
+[RouterC-LoopBack0]ip address 3.3.3.3 32
+
+[RouterC-LoopBack0]interface GigabitEthernet 0/0/0
+[RouterC-GigabitEthernet0/0/0]ip address 10.1.2.2 30
+
+[RouterC-GigabitEthernet0/0/0]interface GigabitEthernet 0/0/1
+[RouterC-GigabitEthernet0/0/1]ip address 172.16.2.1 24
+
+[RouterC]ospf 100
+[RouterC-ospf-100]area 0
+[RouterC-ospf-100-area-0.0.0.0]network 3.3.3.3 0.0.0.0
+[RouterC-ospf-100-area-0.0.0.0]network 10.1.2.0 0.0.0.3
+[RouterC-ospf-100-area-0.0.0.0]network 172.16.2.0 0.0.0.255
+
+[RouterC]mpls lsr-id 3.3.3.3
+[RouterC]mpls
+[RouterC-mpls]label advertise non-null
+[RouterC-mpls]lsp-trigger ip-prefix LAN
+[RouterC-mpls]mpls ldp
+
+[RouterC]ip ip-prefix LAN index 10 permit 172.16.1.0 24
+[RouterC]ip ip-prefix LAN index 20 permit 172.16.2.0 24
+
+[RouterC]interface GigabitEthernet 0/0/0
+[RouterC-GigabitEthernet0/0/0]mpls
+[RouterC-GigabitEthernet0/0/0]mpls ldp
+
+&lt;RouterC&gt;save
+</div></code></code></pre>
+<h3 id="tablas-de-enrutamiento">Tablas de enrutamiento</h3>
+<h4 id="router-a-1">Router A</h4>
+<pre><code><code><div>&lt;RouterA&gt;display ip routing-table
+Route Flags: R - relay, D - download to fib
+------------------------------------------------------------------------------
+Routing Tables: Public
+         Destinations : 11       Routes : 11       
+
+Destination/Mask    Proto   Pre  Cost      Flags NextHop         Interface
+
+        1.1.1.1/32  Direct  0    0           D   127.0.0.1       LoopBack0
+        2.2.2.2/32  OSPF    10   1           D   10.1.1.2        GigabitEthernet0/0/0
+        3.3.3.3/32  OSPF    10   2           D   10.1.1.2        GigabitEthernet0/0/0
+       10.1.1.0/30  Direct  0    0           D   10.1.1.1        GigabitEthernet0/0/0
+       10.1.1.1/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/0
+       10.1.1.3/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/0
+       10.1.2.0/30  OSPF    10   2           D   10.1.1.2        GigabitEthernet0/0/0
+      127.0.0.0/8   Direct  0    0           D   127.0.0.1       InLoopBack0
+      127.0.0.1/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+127.255.255.255/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+255.255.255.255/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+</div></code></code></pre>
+<h4 id="router-b-1">Router B</h4>
+<pre><code><code><div>&lt;RouterB&gt;display ip routing-table
+Route Flags: R - relay, D - download to fib
+------------------------------------------------------------------------------
+Routing Tables: Public
+         Destinations : 13       Routes : 13       
+
+Destination/Mask    Proto   Pre  Cost      Flags NextHop         Interface
+
+        1.1.1.1/32  OSPF    10   1           D   10.1.1.1        GigabitEthernet0/0/0
+        2.2.2.2/32  Direct  0    0           D   127.0.0.1       LoopBack0
+        3.3.3.3/32  OSPF    10   1           D   10.1.2.2        GigabitEthernet0/0/1
+       10.1.1.0/30  Direct  0    0           D   10.1.1.2        GigabitEthernet0/0/0
+       10.1.1.2/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/0
+       10.1.1.3/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/0
+       10.1.2.0/30  Direct  0    0           D   10.1.2.1        GigabitEthernet0/0/1
+       10.1.2.1/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/1
+       10.1.2.3/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/1
+      127.0.0.0/8   Direct  0    0           D   127.0.0.1       InLoopBack0
+      127.0.0.1/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+127.255.255.255/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+255.255.255.255/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+</div></code></code></pre>
+<h4 id="router-c-1">Router C</h4>
+<pre><code><code><div>&lt;RouterC&gt;display ip routing-table
+Route Flags: R - relay, D - download to fib
+------------------------------------------------------------------------------
+Routing Tables: Public
+         Destinations : 11       Routes : 11       
+
+Destination/Mask    Proto   Pre  Cost      Flags NextHop         Interface
+
+        1.1.1.1/32  OSPF    10   2           D   10.1.2.1        GigabitEthernet0/0/0
+        2.2.2.2/32  OSPF    10   1           D   10.1.2.1        GigabitEthernet0/0/0
+        3.3.3.3/32  Direct  0    0           D   127.0.0.1       LoopBack0
+       10.1.1.0/30  OSPF    10   2           D   10.1.2.1        GigabitEthernet0/0/0
+       10.1.2.0/30  Direct  0    0           D   10.1.2.2        GigabitEthernet0/0/0
+       10.1.2.2/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/0
+       10.1.2.3/32  Direct  0    0           D   127.0.0.1       GigabitEthernet0/0/0
+      127.0.0.0/8   Direct  0    0           D   127.0.0.1       InLoopBack0
+      127.0.0.1/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+127.255.255.255/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+255.255.255.255/32  Direct  0    0           D   127.0.0.1       InLoopBack0
+</div></code></code></pre>
+<h3 id="lsps-generados-4">LSPs generados (4)</h3>
+<pre><code><code><div>R1 ------------------- R2 ------------------- R3
+          '1025'                 '1025'
+ |--------------------------------------------&gt;
+          '1024'                 '1024'
+ &lt;--------------------------------------------|
+          '1024'                 '1025'
+ &lt;---------------------||---------------------&gt;
+</div></code></code></pre>
+<h4 id="router-a-2">Router A</h4>
+<pre><code><code><div>&lt;RouterA&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      1024/NULL     -/-                                           
+172.16.2.0/24      NULL/1025     -/GE0/0/0                                     
+172.16.2.0/24      1025/1025     -/GE0/0/0
+</div></code></code></pre>
+<h4 id="router-b-2">Router B</h4>
+<pre><code><code><div>&lt;RouterB&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/1024     -/GE0/0/0                                     
+172.16.1.0/24      1024/1024     -/GE0/0/0                                     
+172.16.2.0/24      NULL/1025     -/GE0/0/1                                     
+172.16.2.0/24      1025/1025     -/GE0/0/1
+</div></code></code></pre>
+<h4 id="router-c-2">Router C</h4>
+<pre><code><code><div>&lt;RouterC&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/1024     -/GE0/0/0                                     
+172.16.1.0/24      1024/1024     -/GE0/0/0                                     
+172.16.2.0/24      1025/NULL     -/-      
+</div></code></code></pre>
+<h2 id="comprobación-del-triggering">Comprobación del triggering</h2>
+<h3 id="ping-interlan">Ping interLAN</h3>
+<pre><code><code><div>&lt;RouterA&gt;ping -a 172.16.1.1 172.16.2.1
+  PING 172.16.2.1: 56  data bytes, press CTRL_C to break
+    Reply from 172.16.2.1: bytes=56 Sequence=1 ttl=254 time=290 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=2 ttl=254 time=110 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=3 ttl=254 time=140 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=4 ttl=254 time=60 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=5 ttl=254 time=70 ms
+
+  --- 172.16.2.1 ping statistics ---
+    5 packet(s) transmitted
+    5 packet(s) received
+    0.00% packet loss
+    round-trip min/avg/max = 60/134/290 ms
+</div></code></code></pre>
+<h4 id="paquetes-capturados-con-wireshark-en-router-b">Paquetes capturados con Wireshark en Router B</h4>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_interlan.png" alt="capinterlan"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_interlan.png" alt="labels_interlan"></p>
+<p>Los routers utilizan MPLS para transportar los Paquetes</p>
+<h3 id="ping-interloopbacks">Ping interLOOPBACKs</h3>
+<pre><code><code><div>&lt;RouterA&gt;ping -a 1.1.1.1 3.3.3.3
+  PING 3.3.3.3: 56  data bytes, press CTRL_C to break
+    Reply from 3.3.3.3: bytes=56 Sequence=1 ttl=254 time=100 ms
+    Reply from 3.3.3.3: bytes=56 Sequence=2 ttl=254 time=80 ms
+    Reply from 3.3.3.3: bytes=56 Sequence=3 ttl=254 time=60 ms
+    Reply from 3.3.3.3: bytes=56 Sequence=4 ttl=254 time=60 ms
+    Reply from 3.3.3.3: bytes=56 Sequence=5 ttl=254 time=70 ms
+
+  --- 3.3.3.3 ping statistics ---
+    5 packet(s) transmitted
+    5 packet(s) received
+    0.00% packet loss
+    round-trip min/avg/max = 60/74/100 ms
+</div></code></code></pre>
+<h4 id="paquetes-capturados-con-wireshark-en-router-b-1">Paquetes capturados con Wireshark en Router B</h4>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_interloopbacks.png" alt="capinterloopbacks"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_interloopbacks.png" alt="labels_interloopbacks"></p>
+<p>Los routers utilizan el protocolo IP, no MPLS, para transportar paquetes.</p>
+<h3 id="ping-router-a-a-lan-2">Ping Router A a LAN 2</h3>
+<pre><code><code><div>&lt;RouterA&gt;ping 172.16.2.1
+  PING 172.16.2.1: 56  data bytes, press CTRL_C to break
+    Reply from 172.16.2.1: bytes=56 Sequence=1 ttl=254 time=70 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=2 ttl=254 time=50 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=3 ttl=254 time=70 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=4 ttl=254 time=60 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=5 ttl=254 time=50 ms
+
+  --- 172.16.2.1 ping statistics ---
+    5 packet(s) transmitted
+    5 packet(s) received
+    0.00% packet loss
+    round-trip min/avg/max = 50/60/70 ms
+</div></code></code></pre>
+<h4 id="paquetes-capturados-con-wireshark-en-router-b-2">Paquetes capturados con Wireshark en Router B</h4>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_ra_to_lan2.png" alt="cap_ra_to_lan2"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_ra_to_lan2.png" alt="labels_ra_to_lan2"></p>
+<p>Los routers utilizan MPLS solo a la ida. A la vuelta solo utilizan IP.</p>
+<h3 id="ping-router-b-a-lan-3">Ping Router B a LAN 3</h3>
+<pre><code><code><div>&lt;RouterB&gt;ping 172.16.2.1
+  PING 172.16.2.1: 56  data bytes, press CTRL_C to break
+    Reply from 172.16.2.1: bytes=56 Sequence=1 ttl=255 time=60 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=2 ttl=255 time=40 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=3 ttl=255 time=40 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=4 ttl=255 time=30 ms
+    Reply from 172.16.2.1: bytes=56 Sequence=5 ttl=255 time=30 ms
+
+  --- 172.16.2.1 ping statistics ---
+    5 packet(s) transmitted
+    5 packet(s) received
+    0.00% packet loss
+    round-trip min/avg/max = 30/40/60 ms
+</div></code></code></pre>
+<h4 id="paquetes-capturados-con-wireshark-en-router-b-3">Paquetes capturados con Wireshark en Router B</h4>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_rb_to_lan2.png" alt="cap_ra_to_lan2"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_rb_to_lan2.png" alt="labels_interloopbacks"></p>
+<p>Los routers solo utilizan MPLS a la ida. A la vuelta utilizan IP.</p>
+<h2 id="comprobación-de-php">Comprobación de PHP</h2>
+<h3 id="non-null">NON-NULL</h3>
+<p>Es como estuvimos trabajando hasta el momento.</p>
+<h4 id="lsps-generados-4-1"><strong>LSPs generados (4)</strong></h4>
+<pre><code><code><div>R1 ------------------- R2 ------------------- R3
+          '1025'                 '1025'
+ |--------------------------------------------&gt;
+          '1024'                 '1024'
+ &lt;--------------------------------------------|
+          '1024'                 '1025'
+ &lt;---------------------||---------------------&gt;
+</div></code></code></pre>
+<h4 id="router-a-3">Router A</h4>
+<pre><code><code><div>&lt;RouterA&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      1024/NULL     -/-                                           
+172.16.2.0/24      NULL/1025     -/GE0/0/0                                     
+172.16.2.0/24      1025/1025     -/GE0/0/0
+</div></code></code></pre>
+<h4 id="router-b-3">Router B</h4>
+<pre><code><code><div>&lt;RouterB&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/1024     -/GE0/0/0                                     
+172.16.1.0/24      1024/1024     -/GE0/0/0                                     
+172.16.2.0/24      NULL/1025     -/GE0/0/1                                     
+172.16.2.0/24      1025/1025     -/GE0/0/1
+</div></code></code></pre>
+<h4 id="router-c-3">Router C</h4>
+<pre><code><code><div>&lt;RouterC&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/1024     -/GE0/0/0                                     
+172.16.1.0/24      1024/1024     -/GE0/0/0                                     
+172.16.2.0/24      1025/NULL     -/-      
+</div></code></code></pre>
+<h3 id="implicit-null">IMPLICIT-NULL</h3>
+<p>Lo que hace es colocar como etiqueta final '3' lo que permite al E-LSR no tener que hacer busqueda en la tabla MPLS pero aun así debe quitar la etiqueta.El problema es que se pierden los bits de EXP que se usan para calidad de servicio. Es el que se utiliza por defecto en estos routers HUAWEI. Para utilizarlo debemos reconfigurar los routers y reiniciarlos para que el cambio surta efecto.</p>
+<h4 id="configuración-de-los-routers"><strong>Configuración de los routers</strong></h4>
+<pre><code><code><div>[RouterX]mpls
+[RouterX-mpls]label advertise implicit-null
+
+&lt;RouterX&gt;save
+&lt;RouterX&gt;reboot
+</div></code></code></pre>
+<h4 id="lsps-generados4"><strong>LSPs generados(4)</strong></h4>
+<pre><code><code><div>R1 ------------------- R2 ------------------- R3
+          '1026'                 '3'
+ |--------------------------------------------&gt;
+           '3'                  '1025'
+ &lt;--------------------------------------------|
+           '3'                   '3'
+ &lt;---------------------||---------------------&gt;
+</div></code></code></pre>
+<h4 id="router-a-4">Router A</h4>
+<pre><code><code><div>&lt;RouterA&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.2.0/24      NULL/1026     -/GE0/0/0                                     
+172.16.2.0/24      1025/1026     -/GE0/0/0                                     
+172.16.1.0/24      3/NULL        -/-
+</div></code></code></pre>
+<h4 id="router-b-4">Router B</h4>
+<pre><code><code><div>&lt;RouterB&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.2.0/24      NULL/3        -/GE0/0/1                                     
+172.16.1.0/24      NULL/3        -/GE0/0/0                                     
+172.16.1.0/24      1025/3        -/GE0/0/0                                     
+172.16.2.0/24      1026/3        -/GE0/0/1
+</div></code></code></pre>
+<h4 id="router-c-4">Router C</h4>
+<pre><code><code><div>&lt;RouterC&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/1025     -/GE0/0/0                                     
+172.16.1.0/24      1024/1025     -/GE0/0/0                                     
+172.16.2.0/24      3/NULL        -/-
+</div></code></code></pre>
+<h3 id="explicit-null">EXPLICIT-NULL</h3>
+<p>El router anterior al E-LSR poné la etiqueta en '0' para que éste no tenga que hacer un double lookup. La ventaja frente al IMPLICIT-NULL es que no se pierden los bits EXP para calidad de servicio. Para utilizarlo debemos reconfigurar los routers y reiniciarlos para que el cambio surta efecto.</p>
+<pre><code><code><div>[RouterX]mpls
+[RouterX-mpls]label advertise explicit-null
+
+&lt;RouterX&gt;save
+&lt;RouterX&gt;reboot
+</div></code></code></pre>
+<h4 id="lsps-generados4-1"><strong>LSPs generados(4)</strong></h4>
+<pre><code><code><div>R1 ------------------- R2 ------------------- R3
+          '1025'                 '0'
+ |--------------------------------------------&gt;
+           '0'                  '1025'
+ &lt;--------------------------------------------|
+           '0'                   '0'
+ &lt;---------------------||---------------------&gt;
+</div></code></code></pre>
+<h4 id="router-a-5">Router A</h4>
+<pre><code><code><div>&lt;RouterA&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      0/NULL        -/-                                           
+172.16.2.0/24      NULL/1025     -/GE0/0/0                                     
+172.16.2.0/24      1024/1025     -/GE0/0/0
+</div></code></code></pre>
+<h4 id="router-b-5">Router B</h4>
+<pre><code><code><div>&lt;RouterB&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/0        -/GE0/0/0                                     
+172.16.1.0/24      1024/0        -/GE0/0/0                                     
+172.16.2.0/24      NULL/0        -/GE0/0/1                                     
+172.16.2.0/24      1025/0        -/GE0/0/1
+</div></code></code></pre>
+<h4 id="router-c-5">Router C</h4>
+<pre><code><code><div>&lt;RouterC&gt;display mpls lsp
+-------------------------------------------------------------------------------
+                 LSP Information: LDP LSP
+-------------------------------------------------------------------------------
+FEC                In/Out Label  In/Out IF                      Vrf Name       
+172.16.1.0/24      NULL/1024     -/GE0/0/0                                     
+172.16.1.0/24      1024/1024     -/GE0/0/0                                     
+172.16.2.0/24      0/NULL        -/-
+</div></code></code></pre>
+
+    </body>
+    </html>
