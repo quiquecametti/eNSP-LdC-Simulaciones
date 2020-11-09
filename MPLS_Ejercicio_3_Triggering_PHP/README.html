@@ -677,7 +677,7 @@ hue-6-2: #e6c07b
         <h1 id="ejercicio-mpls---ldp-y-ospf">Ejercicio MPLS - LDP y OSPF</h1>
 <p>Se prepara el sistema, creando las conexiones necesarias. Posteriormente se configura OSPF. Por último se configura MPLS.</p>
 <h2 id="topología">Topología</h2>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/topology.png" alt="Topo"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/topology.png" alt="Topo"></p>
 <p>RA y RB tienen una conexión point-to-point</p>
 <p>RB y RC tienen una conexión point-to-point</p>
 <h3 id="configuración">Configuración</h3>
@@ -910,8 +910,8 @@ FEC                In/Out Label  In/Out IF                      Vrf Name
     round-trip min/avg/max = 60/134/290 ms
 </div></code></code></pre>
 <h4 id="paquetes-capturados-con-wireshark-en-router-b">Paquetes capturados con Wireshark en Router B</h4>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_interlan.png" alt="capinterlan"></p>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_interlan.png" alt="labels_interlan"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/captured_interlan.png" alt="capinterlan"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/labels_interlan.png" alt="labels_interlan"></p>
 <p>Los routers utilizan MPLS para transportar los Paquetes</p>
 <h3 id="ping-interloopbacks">Ping interLOOPBACKs</h3>
 <pre><code><code><div>&lt;RouterA&gt;ping -a 1.1.1.1 3.3.3.3
@@ -929,8 +929,8 @@ FEC                In/Out Label  In/Out IF                      Vrf Name
     round-trip min/avg/max = 60/74/100 ms
 </div></code></code></pre>
 <h4 id="paquetes-capturados-con-wireshark-en-router-b-1">Paquetes capturados con Wireshark en Router B</h4>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_interloopbacks.png" alt="capinterloopbacks"></p>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_interloopbacks.png" alt="labels_interloopbacks"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/captured_interloopbacks.png" alt="capinterloopbacks"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/labels_interloopbacks.png" alt="labels_interloopbacks"></p>
 <p>Los routers utilizan el protocolo IP, no MPLS, para transportar paquetes.</p>
 <h3 id="ping-router-a-a-lan-2">Ping Router A a LAN 2</h3>
 <pre><code><code><div>&lt;RouterA&gt;ping 172.16.2.1
@@ -948,8 +948,8 @@ FEC                In/Out Label  In/Out IF                      Vrf Name
     round-trip min/avg/max = 50/60/70 ms
 </div></code></code></pre>
 <h4 id="paquetes-capturados-con-wireshark-en-router-b-2">Paquetes capturados con Wireshark en Router B</h4>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_ra_to_lan2.png" alt="cap_ra_to_lan2"></p>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_ra_to_lan2.png" alt="labels_ra_to_lan2"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/captured_ra_to_lan2.png" alt="cap_ra_to_lan2"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/labels_ra_to_lan2.png" alt="labels_ra_to_lan2"></p>
 <p>Los routers utilizan MPLS solo a la ida. A la vuelta solo utilizan IP.</p>
 <h3 id="ping-router-b-a-lan-3">Ping Router B a LAN 3</h3>
 <pre><code><code><div>&lt;RouterB&gt;ping 172.16.2.1
@@ -967,8 +967,8 @@ FEC                In/Out Label  In/Out IF                      Vrf Name
     round-trip min/avg/max = 30/40/60 ms
 </div></code></code></pre>
 <h4 id="paquetes-capturados-con-wireshark-en-router-b-3">Paquetes capturados con Wireshark en Router B</h4>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/captured_rb_to_lan2.png" alt="cap_ra_to_lan2"></p>
-<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/MPLS_Ejercicio_3_Triggering_PHP/labels_rb_to_lan2.png" alt="labels_interloopbacks"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/captured_rb_to_lan2.png" alt="cap_ra_to_lan2"></p>
+<p><img src="file:////home/ecam/Documents/UCA/Laboratorio de Comunicaciones/Ejercicios eNSP/MPLS_Ejercicio_3_Triggering_PHP/labels_rb_to_lan2.png" alt="labels_interloopbacks"></p>
 <p>Los routers solo utilizan MPLS a la ida. A la vuelta utilizan IP.</p>
 <h2 id="comprobación-de-php">Comprobación de PHP</h2>
 <h3 id="non-null">NON-NULL</h3>
@@ -1022,14 +1022,12 @@ FEC                In/Out Label  In/Out IF                      Vrf Name
 &lt;RouterX&gt;save
 &lt;RouterX&gt;reboot
 </div></code></code></pre>
-<h4 id="lsps-generados4"><strong>LSPs generados(4)</strong></h4>
+<h4 id="lsps-generados-2"><strong>LSPs generados (2)</strong></h4>
 <pre><code><code><div>R1 ------------------- R2 ------------------- R3
           '1026'                 '3'
- |--------------------------------------------&gt;
+ |---------------------&gt;
            '3'                  '1025'
- &lt;--------------------------------------------|
-           '3'                   '3'
- &lt;---------------------||---------------------&gt;
+                        &lt;---------------------|
 </div></code></code></pre>
 <h4 id="router-a-4">Router A</h4>
 <pre><code><code><div>&lt;RouterA&gt;display mpls lsp
@@ -1070,7 +1068,7 @@ FEC                In/Out Label  In/Out IF                      Vrf Name
 &lt;RouterX&gt;save
 &lt;RouterX&gt;reboot
 </div></code></code></pre>
-<h4 id="lsps-generados4-1"><strong>LSPs generados(4)</strong></h4>
+<h4 id="lsps-generados4"><strong>LSPs generados(4)</strong></h4>
 <pre><code><code><div>R1 ------------------- R2 ------------------- R3
           '1025'                 '0'
  |--------------------------------------------&gt;
